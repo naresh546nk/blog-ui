@@ -1,0 +1,8 @@
+.navbar,
+.navbar-default {
+  background-image: linear-gradient(
+    to bottom,
+    #e0e5ea 0,
+    #8c8ce0 100%
+  ) !important; /* override background image gradient w/ flat color */
+}
