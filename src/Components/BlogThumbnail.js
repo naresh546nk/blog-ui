@@ -19,14 +19,13 @@ const BlogThumbnail = (props) => {
         <Card.Body>
           <Card.Title className="fst-italic">{props.post.category}</Card.Title>
           <Card.Text style={{ textAlign: "justify" }}>
-            {props.post.content.slice(0, 200) + " . . ."}
+            {props.post.article.slice(0, 200) + " . . ."}
           </Card.Text>
         </Card.Body>
         <Card.Footer className="d-flex text-muted">
           <div className="me-auto">{`${t("posted")}: ${
             props.post.createdOn
           }`}</div>
-          <div>{`${t("edited")}: ${props.post.updatedOn}`}</div>
         </Card.Footer>
       </Card>
     </Link>

@@ -25,10 +25,10 @@ const BlogUpdateForm = ({
   return (
     <Formik
       initialValues={{
-        content: post.content,
+        article: post.article,
       }}
       validationSchema={Yup.object({
-        content: Yup.string()
+        article: Yup.string()
           .min(250, t("validation:atLeast", { number: 250 }))
           .max(5000, t("validation:lessThan", { number: 5000 }))
           .required(t("validation:required")),
@@ -41,14 +41,14 @@ const BlogUpdateForm = ({
           <Card.Body>
             <Card.Title className="fst-italic">{post.title}</Card.Title>
             <Form onSubmit={formik.handleSubmit}>
-              <Form.Group className="my-2" controlId="content">
+              <Form.Group className="my-2" controlId="article">
                 <Form.Control
                   type="text"
-                  name="content"
+                  name="article"
                   className="bg-white"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.content}
+                  value={formik.values.article}
                   disabled={
                     formik.isSubmitting || isDeletingPost || isPostDeleted
                   }
@@ -60,27 +60,27 @@ const BlogUpdateForm = ({
                     )
                   }
                   isValid={
-                    formik.touched.content &&
-                    !formik.errors.content &&
-                    formik.values.content &&
+                    formik.touched.article &&
+                    !formik.errors.article &&
+                    formik.values.article &&
                     authCtx.isLoggedIn &&
                     (authCtx.userName === post.blogUser.userName ||
                       authCtx.authorities === authCtx.ROLES.admin)
                   }
-                  isInvalid={formik.touched.content && formik.errors.content}
+                  isInvalid={formik.touched.article && formik.errors.article}
                   ref={textAreaRef}
                   as="textarea"
                   style={{ overflow: "hidden" }}
                 />
                 <Form.Control.Feedback type="invalid">
-                  {formik.errors.content}
+                  {formik.errors.article}
                 </Form.Control.Feedback>
               </Form.Group>
 
               {authCtx.isLoggedIn &&
                 (authCtx.userName === post.blogUser.userName ||
                   authCtx.authorities === authCtx.ROLES.admin) && (
-                  <div className="d-flex mt-2 justify-content-end">
+                  <div className="d-flex mt-2 justify-article-end">
                     <SubmitButton
                       isSubmitting={formik.isSubmitting}
                       isDisabled={isDeletingPost || isPostDeleted}
@@ -100,7 +100,6 @@ const BlogUpdateForm = ({
           </Card.Body>
           <Card.Footer className="d-flex text-muted">
             <div className="me-auto">{`${t("posted")}: ${post.createdOn}`}</div>
-            <div>{`${t("edited")}: ${post.updatedOn}`}</div>
           </Card.Footer>
         </Card>
       )}
