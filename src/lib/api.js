@@ -1,9 +1,37 @@
 const DOMAIN_URL = "http://localhost:8080/api/v1.0/blogsite";
+const token = sessionStorage.getItem("token");
+
+const headers = {
+  "Content-Type": "application/json",
+  Authorization: `Bearer ${token}`,
+};
+
+export const saveUser = async (user) => {
+  const userWithAuthority = { ...user, authority: "USER" };
+  const response = await fetch(`${DOMAIN_URL}/user/add`, {
+    method: "POST",
+    body: JSON.stringify(userWithAuthority),
+    headers,
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+  return response.json();
+};
+
+export const getUserByUsername = async (username) => {
+  const response = await fetch(`${DOMAIN_URL}/user/${username}`);
+  const jsonData = response.json();
+  console.log("Response :", jsonData);
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+  return jsonData;
+};
 
 export const getAllPosts = async () => {
   const response = await fetch(`${DOMAIN_URL}/getall`);
   const data = await response.json();
-  console.log("#Data :", data);
   return response.ok ? data : [];
 };
 
@@ -17,14 +45,12 @@ export const getPostById = async (id) => {
   return data;
 };
 
-export const submitNewPost = async (newPost, token) => {
+export const submitNewPost = async (newPost) => {
+  console.log("newPost", newPost);
   const response = await fetch(`${DOMAIN_URL}/blogs/add`, {
     method: "POST",
     body: JSON.stringify(newPost),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
+    headers,
   });
   if (!response.ok) {
     throw new Error(response.status);
@@ -47,12 +73,10 @@ export const updatePost = async (updatedPost, token) => {
   return response.json();
 };
 
-export const deletePost = async (postId, token) => {
+export const deletePost = async (postId) => {
   const response = await fetch(`${DOMAIN_URL}/blogs/delete/${postId}`, {
-    method: "DELETE",
-    headers: {
-      // Authorization: `Bearer ${token}`,
-    },
+    method: "GET",
+    headers,
   });
   if (!response.ok) {
     throw new Error(response.status);

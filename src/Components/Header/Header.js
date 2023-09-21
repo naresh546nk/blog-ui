@@ -1,13 +1,5 @@
 import React from "react";
-import {
-  Container,
-  Dropdown,
-  Nav,
-  Navbar,
-  Button,
-  Form,
-  NavDropdown,
-} from "react-bootstrap";
+import { Container, Nav, Navbar, Button, Form } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import { withTranslation } from "react-i18next";
@@ -40,13 +32,12 @@ class Header extends React.Component {
   }
 
   logoutHandler = () => {
-    // console.log("logging out from header");
     this.context.logout();
   };
 
   render() {
-    let { isLoggedIn, userName } = this.context;
-    const { t, i18n } = this.props;
+    let { isLoggedIn, name } = this.context;
+    console.log("Context :", this.context);
 
     return (
       <Container
@@ -60,7 +51,7 @@ class Header extends React.Component {
         <Navbar bg="white" expand="sm">
           <Container fluid>
             <Navbar.Brand to="/" as={NavLink}>
-              {t("home")}
+              Home
             </Navbar.Brand>
 
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -82,13 +73,13 @@ class Header extends React.Component {
                     to="/new-post"
                     as={NavLink}
                   >
-                    {t("New Blog")}
+                    New Blog
                   </Link>
                   <div
                     className="btn align-self-center text-secondary"
                     style={{ cursor: "default" }}
                   >
-                    <span>{`${t("signedInAs")}:  ${userName}`}</span>
+                    <span>{` Signed As:  ${name}`}</span>
                   </div>
                   <Link
                     className="button btn btn-outline-secondary me-1 my-2 text-decoration-none"
@@ -96,7 +87,7 @@ class Header extends React.Component {
                     as={NavLink}
                     onClick={this.logoutHandler}
                   >
-                    {t("logout")}
+                    Logout
                   </Link>
                 </Nav>
               )}
@@ -104,18 +95,18 @@ class Header extends React.Component {
               {!isLoggedIn && (
                 <Nav className="d-flex w-100 justify-content-end">
                   <Link
-                    className="button btn btn-outline-secondary me-1 my-1 text-decoration-none"
+                    className="button btn btn-outline-primary me-1 my-1 text-decoration-none"
                     to="/login"
                     as={NavLink}
                   >
-                    {t("login")}
+                    Login
                   </Link>
                   <Link
-                    className="button btn btn-outline-secondary me-1 my-1 text-decoration-none"
+                    className="button btn btn-outline-primary me-1 my-1 text-decoration-none"
                     to="/register"
                     as={NavLink}
                   >
-                    {t("register")}
+                    Register
                   </Link>
                 </Nav>
               )}

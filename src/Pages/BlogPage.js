@@ -11,49 +11,12 @@ import { useTranslation } from "react-i18next";
 const BlogPage = (props) => {
   const [post, setPost] = useState({});
   const [isLoading, setIsLoading] = useState(true);
-  const [isPostUpdated, setIsPostUpdated] = useState(false);
   const [isPostDeleted, setIsPostDeleted] = useState(false);
-  const [isDeletingPost, setIsDeletingPost] = useState(false);
+
   const [error, setError] = useState(null);
   const { id } = useParams();
   const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
-  const { t } = useTranslation();
-
-  const onPostUpdate = (updatedContent, formikHelpers) => {
-    setTimeout(() => {
-      updatePost(
-        { id: post.id, content: updatedContent.content },
-        authCtx.token
-      )
-        .then(() => {
-          // console.log("Post updated");
-          setIsPostUpdated(true);
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          formikHelpers.setSubmitting(false);
-        });
-    }, 1000);
-  };
-
-  const onPostDelete = () => {
-    setIsDeletingPost(true);
-    setTimeout(() => {
-      deletePost(post.id, authCtx.token)
-        .then(() => {
-          setIsPostDeleted(true);
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          setIsDeletingPost(false);
-        });
-    }, 1000);
-  };
 
   const fetchPostById = () => {
     setIsLoading(true);
@@ -72,16 +35,12 @@ const BlogPage = (props) => {
 
   useEffect(() => {
     setTimeout(() => {
-      if (isPostUpdated) {
-        setIsPostUpdated(false);
-        fetchPostById();
-      }
       if (isPostDeleted) {
         setIsPostDeleted(false);
         navigate("/");
       }
     }, 1000);
-  }, [isPostUpdated, isPostDeleted]);
+  }, [isPostDeleted]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -97,23 +56,11 @@ const BlogPage = (props) => {
   if (!isLoading && !error) {
     content = (
       <Col className="d-flex flex-column justify-content-center">
-        <BlogUpdateForm
-          onSubmit={onPostUpdate}
-          onPostDelete={onPostDelete}
-          isDeletingPost={isDeletingPost}
-          isPostDeleted={isPostDeleted}
-          post={post}
-        />
-        {isPostUpdated && (
-          <Banner
-            className="text-success border-success mt-4"
-            message={`${t("updatedBy", { type: "post" })} ${authCtx.userName}`}
-          />
-        )}
+        <BlogUpdateForm post={post} setIsPostDeleted={setIsPostDeleted} />
         {isPostDeleted && (
           <Banner
             className="text-danger border-danger mt-4"
-            message={`${t("deleteBy", { type: "post" })} ${authCtx.userName}`}
+            message={"Post Deleted Successfully ..."}
           />
         )}
       </Col>
