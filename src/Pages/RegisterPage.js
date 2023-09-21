@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
-import { register } from "../lib/api";
 import RegistrationForm from "../Components/Forms/RegistrationForm";
 import { useNavigate } from "react-router-dom";
 import Banner from "../Components/Banner";
 import { useTranslation } from "react-i18next";
+import AuthContext from "../store/auth-context";
 
 const RegisterPage = (props) => {
+  const { signUp, confirmCode } = useContext(AuthContext);
   const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
   const [registrationMessage, setRegistrationMessage] = useState("");
   const navigate = useNavigate();
@@ -21,27 +22,8 @@ const RegisterPage = (props) => {
     }, 2000);
   }, [isRegistrationSuccess]);
 
-  const onSubmit = (values, formikHelpers) => {
-    setTimeout(() => {
-      register(values)
-        .then((data) => {
-          formikHelpers.resetForm();
-          setRegistrationMessage(
-            t("newUserCreated", { newUser: data.userName })
-          );
-          setIsRegistrationSuccess(true);
-        })
-        .catch((error) => {
-          // console.log(error.message);
-          formikHelpers.setFieldError(
-            "register",
-            t("userAlreadyExists", { userName: error.message })
-          );
-        })
-        .finally(() => {
-          formikHelpers.setSubmitting(false);
-        });
-    }, 1000);
+  const onSubmit = async (values, formikHelpers) => {
+    console.log("value :", values);
   };
   return (
     <Container>
@@ -52,16 +34,7 @@ const RegisterPage = (props) => {
           marginBottom: props.footerHeight,
         }}
       >
-        <RegistrationForm
-          isSubmitted={isRegistrationSuccess}
-          onSubmit={onSubmit}
-        />
-        {isRegistrationSuccess && (
-          <Banner
-            className="text-success border-success mt-4"
-            message={registrationMessage}
-          />
-        )}
+        <RegistrationForm />
       </Row>
     </Container>
   );

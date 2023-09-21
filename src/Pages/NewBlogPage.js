@@ -14,26 +14,6 @@ const NewBlogPage = (props) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const onSubmit = (newPost, formikHelpers) => {
-    // console.log(newPost);
-    submitNewPost(newPost, authContext.token)
-      .then((post) => {
-        // console.log(post);
-        setTimeout(() => {
-          setNewPostId(post.id);
-          setIsSubmitted(true);
-        }, 2000);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setTimeout(() => {
-          formikHelpers.setSubmitting(false);
-        }, 2000);
-      });
-  };
-
   useEffect(() => {
     setTimeout(() => {
       if (isSubmitted) {
@@ -52,13 +32,14 @@ const NewBlogPage = (props) => {
           marginBottom: props.footerHeight,
         }}
       >
-        <NewBlogForm isSubmitted={isSubmitted} onSubmit={onSubmit} />
+        <NewBlogForm
+          setIsSubmitted={setIsSubmitted}
+          setNewPostId={setNewPostId}
+        />
         {isSubmitted && (
           <Banner
             className="text-success border-success mt-4"
-            message={`${t("addedBy", { type: "post" })} ${
-              authContext.userName
-            }`}
+            message={"Post Added Successfully .. "}
           />
         )}
       </Row>

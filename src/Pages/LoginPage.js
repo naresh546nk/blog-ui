@@ -4,66 +4,24 @@ import { login } from "../lib/api";
 import LoginForm from "../Components/Forms/LoginForm";
 import AuthContext from "../store/auth-context";
 import Banner from "../Components/Banner";
-import { useTranslation } from "react-i18next";
+import RegistrationForm from "../Components/Forms/RegistrationForm";
 
 const LoginPage = (props) => {
   const [isLoginSuccess, setIsLoginSuccess] = useState(false);
   const [loginMessage, setLoginMessage] = useState("");
   const authCtx = useContext(AuthContext);
-  const { t } = useTranslation();
-
-  const onSubmit = (loginRequest, formikHelpers) => {
-    setTimeout(() => {
-      //bypassing .
-      authCtx.login({
-        userName: "Naresh Kumar",
-        authorities: "ROLE_ADMIN",
-        jwt: "token686904995949993",
-      });
-
-      login(loginRequest)
-        .then((loginResponse) => {
-          setIsLoginSuccess(true);
-          setLoginMessage(`${t("signedInAs")} ${loginResponse.userName}`);
-          setTimeout(() => {
-            authCtx.login(loginResponse);
-          }, 2000);
-        })
-        .catch((error) => {
-          if (error.message.includes("password")) {
-            formikHelpers.setFieldError(
-              "invalidPassword",
-              t("validation:invalidPassword")
-            );
-          } else {
-            formikHelpers.setFieldError(
-              "invalidUsername",
-              t("validation:invalidUsername")
-            );
-          }
-        })
-        .finally(() => {
-          formikHelpers.setSubmitting(false);
-        });
-    }, 1000);
-  };
 
   return (
-    <Container>
+    <Container className="align-content-center">
       <Row
-        className="py-4 d-flex flex-column align-content-center"
+        className="py-4 d-flex flex-column"
         style={{
           marginTop: props.headerHeight,
           marginBottom: props.footerHeight,
+          marginLeft: "20%",
         }}
       >
-        <LoginForm isSubmitted={isLoginSuccess} onSubmit={onSubmit} />
-        {isLoginSuccess && (
-          <Banner
-            className="text-success border-success mt-4"
-            message={loginMessage}
-          />
-        )}
+        <LoginForm />
       </Row>
     </Container>
   );
