@@ -1,4 +1,5 @@
-const DOMAIN_URL = "http://localhost:8080/api/v1.0/blogsite";
+const BASEURL = process.env.BASEURL || "http://localhost:8080";
+const DOMAIN_URL = BASEURL + "/api/v1.0/blogsite";
 const token = sessionStorage.getItem("token");
 
 const headers = {
