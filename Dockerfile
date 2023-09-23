@@ -1,15 +1,21 @@
-FROM node:alpine
+FROM node:alpine as build
 
 WORKDIR /app
 
-COPY package.json .
+COPY package*.json .
 
 RUN npm config set registry https://registry.npmjs.org/
+
+RUN npm config set strict-ssl false
 
 RUN npm i
 
 COPY . .
 
-EXPOSE 8080
+RUN npm run build
 
-CMD ["npm" ,"start"]
+FROM nginx:1.21
+
+COPY --from=build /app/build /usr/share/nginx/html
+EXPOSE 80
+
