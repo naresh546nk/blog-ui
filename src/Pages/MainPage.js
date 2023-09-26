@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import BlogThumbnailsList from "../Components/BlogThumbnailsList";
 import Loading from "../Components/Loading";
-import { getAllPosts } from "../lib/api";
+import BlogContext from "../store/blog-context";
 
 const MainPage = (props) => {
-  const [posts, setPosts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(true);
+  const { getAllBlogs, getAllCategories, blogList, isLoading } =
+    useContext(BlogContext);
 
   useEffect(() => {
-    setTimeout(() => {
-      getAllPosts().then((data) => {
-        setPosts(data);
-        setIsLoading(false);
-        console.log("MainPage data:", data);
-      });
-    }, 1000);
+    getAllBlogs();
+    getAllCategories();
   }, []);
+  useEffect(() => {
+    if (!isLoading) {
+      setIsLoaded(false);
+    }
+  }, [isLoading]);
 
   return (
     <Container>
@@ -30,8 +31,7 @@ const MainPage = (props) => {
           marginBottom: props.footerHeight,
         }}
       >
-        {isLoading && <Loading />}
-        {!isLoading && <BlogThumbnailsList posts={posts} />}
+        {isLoading ? <Loading /> : <BlogThumbnailsList posts={blogList} />}
       </Row>
     </Container>
   );

@@ -86,9 +86,11 @@ const RegistrationForm = (props) => {
                 type="password"
                 placeholder="Password"
                 name="password"
+                autoComplete="on"
                 onChange={(e) => setPassword(e.target.value)}
                 minLength={8}
                 maxLength={20}
+                required
               />
             </Form.Group>
 
@@ -98,6 +100,8 @@ const RegistrationForm = (props) => {
                 type="password"
                 placeholder="Confirm Password"
                 name="newpassword"
+                autoComplete="on"
+                required
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 isValid={
                   password === confirmPassword &&

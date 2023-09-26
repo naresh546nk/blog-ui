@@ -2,7 +2,33 @@
 .navbar-default {
   background-image: linear-gradient(
     to bottom,
-    #e0e5ea 0,
-    #8c8ce0 100%
+    hsl(180, 50%, 75%) 0,
+    #67c3e2 100%
   ) !important; /* override background image gradient w/ flat color */
+}
+
+.w100 {
+  width: 100% !important;
+}
+
+.navbarBrand:hover {
+  display: inline-block;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #212529;
+  text-align: center;
+  text-decoration: none;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  border-radius: 0.25rem;
+  transition: color 0.05s;
+  box-shadow: 2px 2px 5px grey;
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
 }

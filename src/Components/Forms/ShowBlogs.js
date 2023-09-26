@@ -1,11 +1,15 @@
-import React, { useContext, useEffect, useRef } from "react";
-import { Card, Form } from "react-bootstrap";
+import React, { useContext, useEffect, useState } from "react";
+import { Card } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
 import { deletePost } from "../../lib/api";
 import AuthContext from "../../store/auth-context";
 import SubmitButton from "../SubmitButton";
 
-const BlogUpdateForm = ({ post, setIsPostDeleted }) => {
-  const { isLoggedIn, username, authorities } = useContext(AuthContext);
+const ShowBlogs = ({ post, setIsPostDeleted }) => {
+  const [isSubmitDissable, setIsSubmitDissable] = useState(false);
+  const location = useLocation();
+  const { isLoggedIn, username, authorities, user, ROLES } =
+    useContext(AuthContext);
 
   const deletePostHandler = async () => {
     try {
@@ -16,12 +20,24 @@ const BlogUpdateForm = ({ post, setIsPostDeleted }) => {
     }
   };
 
-  useEffect(() => {}, []);
+  const isButtonDissable = () => {
+    const flag =
+      user?.authority === ROLES.admin ||
+      (user.length > 0 && user?.username === post.blogUser?.username);
+    setIsSubmitDissable(flag);
+    console.log("user", user);
+    console.log("Roles :", ROLES);
+    console.log("post :", post);
+    console.log("Flag: ", flag);
+  };
+
+  useEffect(() => {
+    isButtonDissable();
+  }, [post]);
 
   return (
     <Card className="boxShadow">
       <Card.Header className="fst-italic">
-        {" "}
         Author : {post.authorName}
       </Card.Header>
       <Card.Body>
@@ -37,6 +53,7 @@ const BlogUpdateForm = ({ post, setIsPostDeleted }) => {
               type="button"
               onClick={deletePostHandler}
               name="Delete"
+              isDisabled={!isSubmitDissable}
             />
           </div>
         </div>
@@ -45,4 +62,4 @@ const BlogUpdateForm = ({ post, setIsPostDeleted }) => {
   );
 };
 
-export default BlogUpdateForm;
+export default ShowBlogs;

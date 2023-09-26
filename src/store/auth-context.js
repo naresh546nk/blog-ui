@@ -3,8 +3,8 @@ import React, { useEffect, useState } from "react";
 import { getUserByUsername, saveUser } from "../lib/api";
 
 const AuthContext = React.createContext({
-  name: "naresh",
-  username: "naresh@gmail.com",
+  name: "",
+  username: "",
   authorities: "",
   token: "",
   isLoggedIn: true,
@@ -19,16 +19,46 @@ const AuthContext = React.createContext({
 });
 
 export const AuthContextProvider = (props) => {
-  const [token, setToken] = useState(sessionStorage.getItem("token"));
-  const [username, setUsername] = useState(sessionStorage.getItem("username"));
-  const [name, setName] = useState(sessionStorage.getItem("name"));
+  const [token, setToken] = useState();
+  const [username, setUsername] = useState();
+  const [name, setName] = useState();
   const [error, setError] = useState("");
   const [user, setUser] = useState({});
-  const [authorities, setAuthorities] = useState(
-    sessionStorage.getItem("authorities")
-  );
+  const [authority, setAuthority] = useState();
+  const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
 
-  const userIsLoggedIn = !!token;
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      setToken(localStorage.getItem("token"));
+    }
+    if (localStorage.getItem("username")) {
+      setUsername(localStorage.getItem("username"));
+    }
+    if (localStorage.getItem("name")) {
+      setName(localStorage.getItem("name"));
+    }
+    if (localStorage.getItem("error")) {
+      setError(localStorage.getItem("error"));
+    }
+    if (localStorage.getItem("authority")) {
+      setAuthority(localStorage.getItem("authority"));
+    }
+    if (localStorage.getItem("userIsLoggedIn")) {
+      setAuthority(localStorage.getItem("userIsLoggedIn"));
+    }
+    if (localStorage.getItem("user")) {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    }
+  }, []);
+  useEffect(() => {
+    localStorage.setItem("token", token);
+    localStorage.setItem("username", username);
+    localStorage.setItem("name", name);
+    localStorage.setItem("error", error);
+    localStorage.setItem("authority", authority);
+    localStorage.setItem("userIsLoggedIn", userIsLoggedIn);
+    localStorage.setItem("user", JSON.stringify(user));
+  }, [userIsLoggedIn]);
 
   const loginHandler = async (props) => {
     setError(null);
@@ -40,11 +70,7 @@ export const AuthContextProvider = (props) => {
       setUsername(username);
       setToken(signInUserSession.accessToken.jwtToken);
       setName(data.attributes.name);
-      sessionStorage.setItem("username", username);
-      sessionStorage.setItem("token", token);
-      sessionStorage.setItem("name", name);
-      sessionStorage.setItem("user", user);
-
+      setUserIsLoggedIn(true);
       return data;
     } catch (e) {
       console.log(e);
@@ -56,12 +82,9 @@ export const AuthContextProvider = (props) => {
   const logoutHandler = () => {
     setError(null);
     setUsername(null);
-    setAuthorities(null);
+    setAuthority(null);
     setToken(null);
-    sessionStorage.removeItem("username");
-    sessionStorage.removeItem("authorities");
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("token");
+    userIsLoggedIn(false);
   };
 
   const signUpHandler = async (props) => {
@@ -123,7 +146,7 @@ export const AuthContextProvider = (props) => {
   const contextValue = {
     error: error,
     username: username,
-    authorities: authorities,
+    authority: authority,
     token: token,
     isLoggedIn: userIsLoggedIn,
     name: name,

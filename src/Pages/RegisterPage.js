@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import RegistrationForm from "../Components/Forms/RegistrationForm";
 import { useNavigate } from "react-router-dom";
-import Banner from "../Components/Banner";
-import { useTranslation } from "react-i18next";
 import AuthContext from "../store/auth-context";
 
 const RegisterPage = (props) => {
@@ -11,7 +9,6 @@ const RegisterPage = (props) => {
   const [isRegistrationSuccess, setIsRegistrationSuccess] = useState(false);
   const [registrationMessage, setRegistrationMessage] = useState("");
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   useEffect(() => {
     setTimeout(() => {

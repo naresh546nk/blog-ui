@@ -34,42 +34,41 @@ const LoginForm = () => {
   }, [isLognSuccess]);
 
   return (
-    <div>
-      <Col sm={10} md={7} lg={7}>
-        <Card className="roundedBorder boxShadow">
-          <Card.Header className="fst-italic">Login Form</Card.Header>
-          <Form className="m-2 p-4 border rounded-3" onSubmit={loginHandler}>
-            <Form.Group className="mb-3" controlId="userName">
-              <Form.Label>Email </Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Email as Username"
-                name="userName"
-                required
-                onChange={(e) => setUsername(e.target.value)}
-              />
-            </Form.Group>
+    <Col sm={10} md={8} lg={6}>
+      <Card className="roundedBorder boxShadow">
+        <Card.Header className="fst-italic">Login Form</Card.Header>
+        <Form className="m-2 p-4 border rounded-3" onSubmit={loginHandler}>
+          <Form.Group className="mb-3" controlId="userName">
+            <Form.Label>Email </Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Email as Username"
+              name="userName"
+              required
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </Form.Group>
 
-            <Form.Group className="mb-3" controlId="password">
-              <Form.Label>Password </Form.Label>
-              <Form.Control
-                maxLength={20}
-                minLength={8}
-                type="password"
-                placeholder="Password"
-                name="password"
-                required
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Form.Group>
-            <SubmitButton name="Login" />
-          </Form>
-        </Card>
-        {error && (
-          <Banner className="text-danger border-success mt-4" message={error} />
-        )}
-      </Col>
-    </div>
+          <Form.Group className="mb-3" controlId="password">
+            <Form.Label>Password </Form.Label>
+            <Form.Control
+              maxLength={20}
+              minLength={8}
+              type="password"
+              placeholder="Password"
+              name="password"
+              autoComplete="on"
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
+          <SubmitButton name="Login" />
+        </Form>
+      </Card>
+      {error && (
+        <Banner className="text-danger border-success mt-4" message={error} />
+      )}
+    </Col>
   );
 };
 export default LoginForm;

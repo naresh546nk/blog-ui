@@ -7,6 +7,17 @@ const headers = {
   Authorization: `Bearer ${token}`,
 };
 
+export const findDistinctCategory = async () => {
+  const response = await fetch(`${DOMAIN_URL}/blogs/info/category`, {
+    method: "GET",
+    headers,
+  });
+  if (!response.ok) {
+    throw new Error(response.status);
+  }
+  return response.json();
+};
+
 export const saveUser = async (user) => {
   const userWithAuthority = { ...user, authority: "USER" };
   const response = await fetch(`${DOMAIN_URL}/user/add`, {
@@ -30,7 +41,7 @@ export const getUserByUsername = async (username) => {
   return jsonData;
 };
 
-export const getAllPosts = async () => {
+export const getAllBlogs = async () => {
   const response = await fetch(`${DOMAIN_URL}/getall`);
   const data = await response.json();
   return response.ok ? data : [];
