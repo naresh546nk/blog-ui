@@ -3,7 +3,7 @@ import axios from "axios";
 const BASEURL = "http://bbservicealb-2046589565.us-east-1.elb.amazonaws.com";
 //process.env.BASEURL || "http://localhost:8080";
 const DOMAIN_URL = BASEURL + "/api/v1.0/blogsite";
-
+console.log("BASEURL :", BASEURL);
 export const findDistinctCategory = ({ token }) => {
   return axios.get(`${DOMAIN_URL}/blogs/info/category`, {
     method: "GET",
