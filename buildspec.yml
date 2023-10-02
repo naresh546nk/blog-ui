@@ -15,11 +15,11 @@ phases:
   build:
     commands:
       - echo "Building docker images "
-      - docker build -t  blog-site-ui:latest .
+      - docker build -t  blog-site-ui:lts .
   post_build:
     commands:
       - echo "Taging Docker Images and pushing to ECR"
-      - docker tag blog-site-ui:latest ${ECR_IMAGE_URI}
+      - docker tag blog-site-ui:lts ${ECR_IMAGE_URI}
       - echo ${ECR_IMAGE_URI}
       - docker push ${ECR_IMAGE_URI}
       #Generatie image definitions file for ECS

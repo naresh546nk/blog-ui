@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BASEURL = process.env.BASEURL || "http://localhost:8080";
+const BASEURL = "http://bbservicealb-2046589565.us-east-1.elb.amazonaws.com";
+//process.env.BASEURL || "http://localhost:8080";
 const DOMAIN_URL = BASEURL + "/api/v1.0/blogsite";
 
 export const findDistinctCategory = ({ token }) => {
