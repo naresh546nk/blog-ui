@@ -10,17 +10,16 @@ phases:
       #      - echo ${DOCKERHUB_TOKEN} | docker login -u ${DOCKERHUM_USER} --password-stdin
       #       ECR login
       - aws ecr get-login-password --region ${AWS_REGION} | docker login -u AWS --password-stdin ${REPOSITORY_URI}
-      - ECR_IMAGE_URI="${REPOSITORY_URI}/${ECR_REPO_NAME}:${CODEBUILD_BUILD_NUMBER}"
+      - ECR_IMAGE_URI="${REPOSITORY_URI}/${ECR_REPO_NAME}"
 
   build:
     commands:
       - echo "Building docker images "
-      - docker build -t  blog-site-ui:latest .
+      - docker build -t  blog-site-ui:$CODEBUILD_BUILD_NUMBER .
   post_build:
     commands:
       - echo "Taging Docker Images and pushing to ECR"
-      - docker tag blog-site-ui:latest ${ECR_IMAGE_URI}
-      - echo ${ECR_IMAGE_URI}
+      - docker tag blog-site-ui:$CODEBUILD_BUILD_NUMBER ${ECR_IMAGE_URI}
       - docker push ${ECR_IMAGE_URI}
       #Generatie image definitions file for ECS
       - printf '[{"name":"blog-ui-container", "imageUri":"%s"}]' ${ECR_IMAGE_URI} > imagedefinitions.json
