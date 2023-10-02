@@ -1,18 +1,18 @@
 import React, { useContext, useEffect } from "react";
-import { Card, Col, Form } from "react-bootstrap";
+import { Card, Col, Form, Row } from "react-bootstrap";
 import SubmitButton from "../SubmitButton";
 import AuthContext from "../../store/auth-context";
 import { useState } from "react";
-import { submitNewPost } from "../../lib/api";
+import { submitNewBlog } from "../../lib/api";
 
 const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
-  const { user } = useContext(AuthContext);
+  const { user, token } = useContext(AuthContext);
   const [blogName, setBlogName] = useState("");
   const [category, setCategory] = useState("");
   const [article, setArticle] = useState("");
   const [authorName, setAuthorName] = useState("");
   const [isValidArticle, setIsValidArticle] = useState(false);
-  const submitHanlder = async (e) => {
+  const submitHanlder = (e) => {
     e.preventDefault();
     const post = {
       blogName,
@@ -22,14 +22,16 @@ const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
       blogUser: user,
     };
     console.log("Adding post : ", post);
-    try {
-      const data = await submitNewPost(post);
-      setIsSubmitted(true);
-      setNewPostId(data.id);
-      console.log("Data :", data);
-    } catch (e) {
-      console.log("error : ", e);
-    }
+    const response = submitNewBlog({ post, token });
+    response
+      .then((data) => {
+        setIsSubmitted(true);
+        setNewPostId(data.data.id);
+        console.log("Data :", data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const validateArticle = () => {
@@ -63,41 +65,45 @@ const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
         </Card.Header>
         <Card.Body className="m-2 pb-3 border rounded-3">
           <Form onSubmit={submitHanlder}>
-            <Form.Group controlId="blogName">
-              <Form.Label>Blog Name :</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder={"Blog Name"}
-                name="blogName"
-                onChange={(e) => setBlogName(e.target.value)}
-                minLength={6}
-                maxLength={40}
-                required
-                isValid={blogName.length >= 6 && blogName.length <= 40}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="category">
-              <Form.Label>Category :</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder={"Enter Category here .."}
-                name="category"
-                onChange={(e) => setCategory(e.target.value)}
-                minLength={4}
-                maxLength={40}
-                required
-                isValid={category.length >= 6 && category.length <= 40}
-              />
-            </Form.Group>
-
+            <Row>
+              <Col md={6} sm={12}>
+                <Form.Group controlId="blogName">
+                  <Form.Label>Blog Name :</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder={"Blog Name"}
+                    name="blogName"
+                    onChange={(e) => setBlogName(e.target.value)}
+                    minLength={6}
+                    maxLength={40}
+                    required
+                    isValid={blogName.length >= 6 && blogName.length <= 40}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={6} sm={12}>
+                <Form.Group controlId="category">
+                  <Form.Label>Category :</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder={"Enter Category here .."}
+                    name="category"
+                    onChange={(e) => setCategory(e.target.value)}
+                    minLength={4}
+                    maxLength={40}
+                    required
+                    isValid={category.length >= 6 && category.length <= 40}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
             <Form.Group className="my-2" controlId="article">
               <Form.Label>Article</Form.Label>
               <Form.Control
                 type="text"
                 name="article"
                 as="textarea"
-                style={{ overflow: "hidden", height: "500px" }}
+                style={{ overflow: "hidden", height: "40vh" }}
                 onChange={(e) => setArticle(e.target.value)}
                 minLength={400}
                 maxLength={10000}

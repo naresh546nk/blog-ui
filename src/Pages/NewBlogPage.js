@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import NewBlogForm from "../Components/Forms/NewBlogForm";
-import { submitNewPost } from "../lib/api";
+import { submitNewBlog } from "../lib/api";
 import AuthContext from "../store/auth-context";
 import Banner from "../Components/Banner";
 import { useNavigate } from "react-router-dom";
@@ -28,8 +28,8 @@ const NewBlogPage = (props) => {
       <Row
         className="py-4 d-flex flex-column justify-content-center"
         style={{
-          marginTop: props.headerHeight,
-          marginBottom: props.footerHeight,
+          marginTop: "50px",
+          marginBottom: "50px",
         }}
       >
         <NewBlogForm

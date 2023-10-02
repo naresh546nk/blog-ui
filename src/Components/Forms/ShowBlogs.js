@@ -1,34 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
-import { deletePost } from "../../lib/api";
 import AuthContext from "../../store/auth-context";
+import BlogContext from "../../store/blog-context";
 import SubmitButton from "../SubmitButton";
 
-const ShowBlogs = ({ post, setIsPostDeleted }) => {
+const ShowBlogs = ({ post, deletePostByIdHandler }) => {
   const [isSubmitDissable, setIsSubmitDissable] = useState(false);
-  const location = useLocation();
-  const { isLoggedIn, username, authorities, user, ROLES } =
-    useContext(AuthContext);
-
-  const deletePostHandler = async () => {
-    try {
-      await deletePost(post.id);
-      setIsPostDeleted(true);
-    } catch (e) {
-      console.log(e);
-    }
-  };
+  const { user, ROLES } = useContext(AuthContext);
+  const { deleteBlog } = useContext(BlogContext);
 
   const isButtonDissable = () => {
     const flag =
       user?.authority === ROLES.admin ||
-      (user.length > 0 && user?.username === post.blogUser?.username);
+      user?.username === post.blogUser?.username;
     setIsSubmitDissable(flag);
-    console.log("user", user);
-    console.log("Roles :", ROLES);
-    console.log("post :", post);
-    console.log("Flag: ", flag);
   };
 
   useEffect(() => {
@@ -36,7 +21,10 @@ const ShowBlogs = ({ post, setIsPostDeleted }) => {
   }, [post]);
 
   return (
-    <Card className="boxShadow">
+    <Card
+      className="boxShadow"
+      style={{ marginTop: "60px", marginBottom: "100px" }}
+    >
       <Card.Header className="fst-italic">
         Author : {post.authorName}
       </Card.Header>
@@ -51,7 +39,7 @@ const ShowBlogs = ({ post, setIsPostDeleted }) => {
             <SubmitButton
               variant="outline-danger"
               type="button"
-              onClick={deletePostHandler}
+              onClick={() => deletePostByIdHandler(post.id)}
               name="Delete"
               isDisabled={!isSubmitDissable}
             />

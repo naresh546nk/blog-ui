@@ -2,17 +2,22 @@ import React, { useContext, useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import BlogThumbnailsList from "../Components/BlogThumbnailsList";
 import Loading from "../Components/Loading";
+import AuthContext from "../store/auth-context";
 import BlogContext from "../store/blog-context";
 
 const MainPage = (props) => {
   const [isLoaded, setIsLoaded] = useState(true);
   const { getAllBlogs, getAllCategories, blogList, isLoading } =
     useContext(BlogContext);
+  const { isLoggedIn } = useContext(AuthContext);
 
   useEffect(() => {
-    getAllBlogs();
-    getAllCategories();
-  }, []);
+    if (isLoggedIn) {
+      console.log("calling getAllBlogs");
+      getAllBlogs();
+      getAllCategories();
+    }
+  }, [isLoggedIn]);
   useEffect(() => {
     if (!isLoading) {
       setIsLoaded(false);
@@ -27,8 +32,8 @@ const MainPage = (props) => {
         lg={3}
         className="g-4 pb-4 justify-content-center"
         style={{
-          marginTop: props.headerHeight,
-          marginBottom: props.footerHeight,
+          marginTop: "60px",
+          marginBottom: "60px",
         }}
       >
         {isLoading ? <Loading /> : <BlogThumbnailsList posts={blogList} />}

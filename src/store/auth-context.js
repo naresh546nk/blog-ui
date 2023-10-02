@@ -7,7 +7,7 @@ const AuthContext = React.createContext({
   username: "",
   authorities: "",
   token: "",
-  isLoggedIn: true,
+  isLoggedIn: false,
   user: {},
   ROLES: {},
   signUp: (props) => {},
@@ -26,38 +26,59 @@ export const AuthContextProvider = (props) => {
   const [user, setUser] = useState({});
   const [authority, setAuthority] = useState();
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
+  const [isLocalDataSet, setIsLocalDataSet] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setToken(localStorage.getItem("token"));
-    }
-    if (localStorage.getItem("username")) {
-      setUsername(localStorage.getItem("username"));
-    }
-    if (localStorage.getItem("name")) {
-      setName(localStorage.getItem("name"));
-    }
-    if (localStorage.getItem("error")) {
-      setError(localStorage.getItem("error"));
-    }
-    if (localStorage.getItem("authority")) {
-      setAuthority(localStorage.getItem("authority"));
-    }
-    if (localStorage.getItem("userIsLoggedIn")) {
-      setAuthority(localStorage.getItem("userIsLoggedIn"));
-    }
-    if (localStorage.getItem("user")) {
-      setUser(JSON.parse(localStorage.getItem("user")));
-    }
+    setToken(localStorage.getItem("token"));
+    setUsername(localStorage.getItem("username"));
+    setName(localStorage.getItem("name"));
+    setAuthority(localStorage.getItem("authority"));
+    setUserIsLoggedIn(localStorage.getItem("userIsLoggedIn"));
+    setUser(JSON.parse(localStorage.getItem("user")));
   }, []);
   useEffect(() => {
-    localStorage.setItem("token", token);
-    localStorage.setItem("username", username);
-    localStorage.setItem("name", name);
-    localStorage.setItem("error", error);
-    localStorage.setItem("authority", authority);
-    localStorage.setItem("userIsLoggedIn", userIsLoggedIn);
-    localStorage.setItem("user", JSON.stringify(user));
+    if (isLocalDataSet) {
+      localStorage.setItem("token", token);
+      localStorage.setItem("username", username);
+      localStorage.setItem("name", name);
+      localStorage.setItem("authority", authority);
+      localStorage.setItem("isLoggedIn", userIsLoggedIn);
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("userIsLoggedIn", userIsLoggedIn);
+      setIsLocalDataSet(false);
+    }
+  }, [isLocalDataSet]);
+
+  useEffect(() => {
+    if (userIsLoggedIn) {
+      getUserHandler({ username, token });
+      localStorage.setItem("user", JSON.stringify(user));
+    }
+  }, [userIsLoggedIn]);
+
+  //To remove the error after 10second
+  useEffect(() => {
+    if (error === "null") {
+      setError(null);
+    }
+    if (error !== null) {
+      const timmer = setTimeout(() => {
+        setError(null);
+      }, 10000);
+      return () => clearTimeout(timmer);
+    }
+  }, [error]);
+
+  //To expire the token after 1hr
+
+  useEffect(() => {
+    if (userIsLoggedIn) {
+      const timmer = setTimeout(() => {
+        console.log("Token expire");
+        logoutHandler();
+      }, 3600000);
+      return () => clearTimeout(timmer);
+    }
   }, [userIsLoggedIn]);
 
   const loginHandler = async (props) => {
@@ -65,12 +86,12 @@ export const AuthContextProvider = (props) => {
     const { username, password } = props;
     try {
       const data = await Auth.signIn(username, password);
-      getUserHandler({ username });
       const { signInUserSession } = data;
       setUsername(username);
       setToken(signInUserSession.accessToken.jwtToken);
       setName(data.attributes.name);
       setUserIsLoggedIn(true);
+      setIsLocalDataSet(true);
       return data;
     } catch (e) {
       console.log(e);
@@ -80,11 +101,18 @@ export const AuthContextProvider = (props) => {
   };
 
   const logoutHandler = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("name");
+    localStorage.removeItem("authority");
+    localStorage.removeItem("userIsLoggedIn");
+    localStorage.removeItem("user");
+    setToken(null);
     setError(null);
     setUsername(null);
     setAuthority(null);
     setToken(null);
-    userIsLoggedIn(false);
+    setUserIsLoggedIn(false);
   };
 
   const signUpHandler = async (props) => {
@@ -120,27 +148,23 @@ export const AuthContextProvider = (props) => {
     }
   };
 
-  const addUserToDbHandler = async (props) => {
-    try {
-      const { user } = await saveUser(props);
-      setUser(user);
-      console.log(user);
-      return user;
-    } catch (e) {
-      throw e;
-    }
+  const addUserToDbHandler = (props) => {
+    const response = saveUser(props);
+    response
+      .then((data) => {
+        console.log(data.data);
+        setUser(user);
+        return data.data;
+      })
+      .catch((err) => setError(err.message));
   };
 
-  const getUserHandler = async ({ username }) => {
-    try {
-      const data = await getUserByUsername(username);
-      setUser(data);
-      console.log("#userData", data);
-      return user;
-    } catch (e) {
-      console.log("Error : ", e);
-      throw e;
-    }
+  const getUserHandler = ({ username, token }) => {
+    const response = getUserByUsername({ username, token });
+    response.then((data) => {
+      setUser(data.data);
+      return data.data;
+    });
   };
 
   const contextValue = {
@@ -163,10 +187,7 @@ export const AuthContextProvider = (props) => {
     getUser: getUserHandler,
   };
 
-  useEffect(() => {
-    console.log("##User ", user);
-    console.log("##Error ", error);
-  }, [user, error]);
+  console.log("contextValue", contextValue);
 
   return (
     <AuthContext.Provider value={contextValue}>

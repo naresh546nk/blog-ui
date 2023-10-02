@@ -37,8 +37,10 @@ const RegistrationForm = (props) => {
         username,
         code,
       });
-      addUserToDb({ name, username });
-      setIsSignUpSuccess(true);
+      const user = addUserToDb({ name, username });
+      if (user.username === username) {
+        setIsSignUpSuccess(true);
+      }
     } catch (e) {
       console.log(e);
     }

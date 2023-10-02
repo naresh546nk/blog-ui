@@ -1,6 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { createContext } from "react";
-import { findDistinctCategory, getAllBlogs } from "../lib/api";
+import {
+  deleteBlog,
+  findDistinctCategory,
+  getAllBlogs,
+  getBlogById,
+} from "../lib/api";
+import AuthContext from "./auth-context";
 
 const BlogContext = createContext({
   isLoading: "",
@@ -10,6 +16,8 @@ const BlogContext = createContext({
   getAllBlogs: () => {},
   getAllCategories: () => {},
   filterByCategory: () => {},
+  deleteBlog: (id) => {},
+  featchBlogById: (id) => {},
 });
 export const BlogContextProvider = (props) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -18,6 +26,7 @@ export const BlogContextProvider = (props) => {
   const [blogList, setBlogList] = useState([]);
   const [blogCategories, setBlogCategories] = useState([]);
   const [mainData, setMainData] = useState([]);
+  const { token } = useContext(AuthContext);
 
   const filterByCategoryHandler = async (category) => {
     const newBlogList = mainData.filter((post) =>
@@ -27,10 +36,12 @@ export const BlogContextProvider = (props) => {
   };
 
   const getAllCategoriesHandler = () => {
+    setError(null);
     setIsLoading(true);
-    findDistinctCategory()
+    const response = findDistinctCategory({ token });
+    response
       .then((data) => {
-        setBlogCategories(data);
+        setBlogCategories(data.data);
         setIsLoading(false);
       })
       .catch((e) => {
@@ -39,18 +50,52 @@ export const BlogContextProvider = (props) => {
       });
   };
 
-  const getAllBlogHandler = async () => {
+  const getAllBlogHandler = () => {
+    setError(null);
     setIsLoading(true);
-    getAllBlogs()
+    const response = getAllBlogs({ token });
+    response
       .then((data) => {
-        setBlogList(data);
-        setMainData(data);
+        console.log("all blogs :", data.data);
+        setBlogList(data.data);
+        setMainData(data.data);
         setIsLoading(false);
+        return data.data;
       })
       .catch((e) => {
         setError(e.message);
         setIsLoading(false);
       });
+  };
+
+  const deleteBlogHandler = (id) => {
+    setError(null);
+    const response = deleteBlog({ id, token });
+    response
+      .then((data) => {
+        console.log("Blog deleted successfully ");
+        return data.data;
+      })
+      .catch((error) => setError(error.message));
+
+    return response;
+  };
+
+  const featchBlogByIdHandler = (id) => {
+    setError(null);
+    setIsLoading(true);
+    const response = getBlogById({ id, token });
+    response
+      .then((data) => {
+        setIsLoading(false);
+        console.log(data.data);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        console.log(error);
+        setError(error.message);
+      });
+    return response;
   };
 
   const contextValue = {
@@ -62,6 +107,8 @@ export const BlogContextProvider = (props) => {
     getAllBlogs: getAllBlogHandler,
     getAllCategories: getAllCategoriesHandler,
     filterByCategory: filterByCategoryHandler,
+    deleteBlog: deleteBlogHandler,
+    featchBlogById: featchBlogByIdHandler,
   };
   return (
     <BlogContext.Provider value={contextValue}>

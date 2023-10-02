@@ -2,37 +2,41 @@ import React, { useContext, useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import ShowBlogs from "../Components/Forms/ShowBlogs";
 import Loading from "../Components/Loading";
-import { getPostById } from "../lib/api";
 import { useNavigate, useParams } from "react-router-dom";
 import Banner from "../Components/Banner";
+import BlogContext from "../store/blog-context";
 
 const BlogPage = (props) => {
   const [post, setPost] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
   const [isPostDeleted, setIsPostDeleted] = useState(false);
+  const { error, featchBlogById, isLoading } = useContext(BlogContext);
+  const { deleteBlog } = useContext(BlogContext);
 
-  const [error, setError] = useState(null);
+  //const [error, setError] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
 
   const fetchPostById = () => {
-    setIsLoading(true);
-    getPostById(id)
-      .then((post) => {
-        setPost(post);
-      })
-      .catch((error) => {
-        setError(error.message);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    const response = featchBlogById(id);
+    response.then((data) => {
+      console.log(data);
+      setPost(data.data);
+    });
+  };
+
+  const deletePostByIdHandler = (id) => {
+    const response = deleteBlog(id);
+    response.then((data) => {
+      setIsPostDeleted(true);
+    });
   };
 
   useEffect(() => {
     if (isPostDeleted) {
-      setIsPostDeleted(false);
-      navigate("/");
+      setTimeout(() => {
+        setIsPostDeleted(false);
+        navigate("/");
+      }, 2000);
     }
   }, [isPostDeleted]);
 
@@ -45,16 +49,18 @@ const BlogPage = (props) => {
   if (error) {
     content = <Banner className="text-danger border-danger" message={error} />;
   }
-  if (!isLoading && !error) {
+  if (isPostDeleted) {
+    content = (
+      <Banner
+        className="text-danger border-danger mt-4"
+        message={"Post Deleted Successfully ..."}
+      />
+    );
+  }
+  if (!isLoading && !error && !isPostDeleted) {
     content = (
       <Col className="d-flex flex-column justify-content-center">
-        <ShowBlogs post={post} setIsPostDeleted={setIsPostDeleted} />
-        {isPostDeleted && (
-          <Banner
-            className="text-danger border-danger mt-4"
-            message={"Post Deleted Successfully ..."}
-          />
-        )}
+        <ShowBlogs post={post} deletePostByIdHandler={deletePostByIdHandler} />
       </Col>
     );
   }
@@ -64,8 +70,8 @@ const BlogPage = (props) => {
       <Row
         className="pt-4 d-flex justify-content-center"
         style={{
-          marginTop: props.headerHeight,
-          marginBottom: props.footerHeight,
+          marginTop: "50px",
+          marginBottom: "50px",
         }}
       >
         {content}

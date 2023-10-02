@@ -13,6 +13,12 @@ const Header = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const onClickHandler = () => {
+    if (isLoggedIn) {
+      getAllBlogs();
+    }
+  };
+
   useEffect(() => {
     props.onHeightChange(70);
     console.log("blogCategory ", blogCategories);
@@ -41,7 +47,7 @@ const Header = (props) => {
     >
       <Navbar bg="white" expand="sm">
         <Container fluid>
-          <Navbar.Brand to="/" as={NavLink} onClick={getAllBlogs}>
+          <Navbar.Brand to="/" as={NavLink} onClick={onClickHandler}>
             <div className="navbarBrand">BLOG SITE</div>
           </Navbar.Brand>
 

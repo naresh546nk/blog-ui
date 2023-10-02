@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 Amplify.configure({
   Auth: {
     userPoolId: "us-east-1_3PQhzGhke",
-    region: "ap-south-1",
+    region: "us-east-1",
     userPoolWebClientId: "7quscff33ekhb1vprkdjjslod3",
   },
 });
