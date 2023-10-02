@@ -2,12 +2,6 @@ import axios from "axios";
 
 const BASEURL = process.env.BASEURL || "http://localhost:8080";
 const DOMAIN_URL = BASEURL + "/api/v1.0/blogsite";
-const tokenFromLocalStorage = localStorage.getItem("token");
-
-const headers = {
-  Authorization: `Bearer ${tokenFromLocalStorage}`,
-  "Content-Type": "application/json",
-};
 
 export const findDistinctCategory = ({ token }) => {
   return axios.get(`${DOMAIN_URL}/blogs/info/category`, {
