@@ -3,11 +3,13 @@ env:
   variables:
     ECR_REPO_NAME: blog-site-ui
     REPOSITORY_URI: 906462432751.dkr.ecr.us-east-1.amazonaws.com
+    DOCKERHUB_TOKEN: dckr_pat_e5UVxPAPz1V5s1dMthMIb6yZXgM
+    DOCKERHUM_USER: naresh546
 phases:
   pre_build:
     commands:
       #Docker Hub login
-      #      - echo ${DOCKERHUB_TOKEN} | docker login -u ${DOCKERHUM_USER} --password-stdin
+      - echo ${DOCKERHUB_TOKEN} | docker login -u ${DOCKERHUM_USER} --password-stdin
       #       ECR login
       - aws ecr get-login-password --region ${AWS_REGION} | docker login -u AWS --password-stdin ${REPOSITORY_URI}
       - ECR_IMAGE_URI="${REPOSITORY_URI}/${ECR_REPO_NAME}:${CODEBUILD_BUILD_NUMBER}"
@@ -15,11 +17,11 @@ phases:
   build:
     commands:
       - echo "Building docker images "
-      - docker build -t  blog-site-ui:lts .
+      - docker build -t  blog-site-ui:latest .
   post_build:
     commands:
       - echo "Taging Docker Images and pushing to ECR"
-      - docker tag blog-site-ui:lts ${ECR_IMAGE_URI}
+      - docker tag blog-site-ui:latest ${ECR_IMAGE_URI}
       - echo ${ECR_IMAGE_URI}
       - docker push ${ECR_IMAGE_URI}
       #Generatie image definitions file for ECS
