@@ -140,8 +140,10 @@ export const AuthContextProvider = (props) => {
     const { username, code } = props;
     console.log("Props :", props);
     try {
-      await Auth.confirmSignUp(username, code);
+      const data = await Auth.confirmSignUp(username, code);
       setError("");
+      console.log("data", data);
+      return data;
     } catch (e) {
       setError(e.message);
       throw e;
@@ -154,9 +156,9 @@ export const AuthContextProvider = (props) => {
       .then((data) => {
         console.log(data.data);
         setUser(user);
-        return data.data;
       })
       .catch((err) => setError(err.message));
+    return response;
   };
 
   const getUserHandler = ({ username, token }) => {

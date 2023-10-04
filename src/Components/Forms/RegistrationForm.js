@@ -15,16 +15,17 @@ const RegistrationForm = (props) => {
   const [isSignUpSuccess, setIsSignUpSuccess] = useState(false);
   const navigate = useNavigate();
 
-  const { signUp, confirmSignUp, error, addUserToDb } = useContext(AuthContext);
+  const { signUp, confirmSignUp, error, addUserToDb, login } =
+    useContext(AuthContext);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     console.log("Submited ", name, username, password, confirmPassword);
     try {
-      await signUp({ username, password, name });
+      const data = await signUp({ username, password, name });
       setIsShowCode(true);
+      console.log("data :", data);
     } catch (e) {
-      console.log();
       setIsShowCode(false);
     }
   };
@@ -33,13 +34,22 @@ const RegistrationForm = (props) => {
     e.preventDefault();
     console.log("code ", code);
     try {
-      await confirmSignUp({
+      const data = await confirmSignUp({
         username,
         code,
       });
-      const user = addUserToDb({ name, username });
-      if (user.username === username) {
-        setIsSignUpSuccess(true);
+      if (data === "SUCCESS") {
+        const response = addUserToDb({ name, username });
+        response
+          .then((data) => {
+            if (data?.data) {
+              console.log("data :", data);
+              setIsSignUpSuccess(true);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     } catch (e) {
       console.log(e);
@@ -48,7 +58,10 @@ const RegistrationForm = (props) => {
 
   useEffect(() => {
     if (isSignUpSuccess) {
-      navigate("/login");
+      login({ username, password });
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     }
   }, [isSignUpSuccess]);
 
