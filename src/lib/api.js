@@ -1,6 +1,6 @@
 import axios from "axios";
 
-var BASEURL = "bbservice.db.io";
+var BASEURL = "http://bbservice.db.io";
 if (process.env?.NODE_ENV === "development") {
   BASEURL = "http://localhost:8080";
 }
