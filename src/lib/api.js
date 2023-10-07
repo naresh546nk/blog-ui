@@ -1,6 +1,6 @@
 import axios from "axios";
 
-var BASEURL = "http://bb.local:8080";
+var BASEURL = "http://bb-dns.blog.io:8080";
 if (process.env?.NODE_ENV === "development") {
   BASEURL = "http://localhost:8080";
 }
