@@ -16,7 +16,7 @@ const SubmitButton = ({
     <div className="d-flex justify-content-end">
       <Button
         variant={variant || "outline-primary"}
-        className={`${isSubmitting ? "disabled button" : "button"} ms-1`}
+        className={`${isSubmitting ? "disabled button" : "button"} ms-1 ${isDisabled}? "dissabled button": "active"`}
         type={type || "submit"}
         disabled={isSubmitting || isSubmitted || isDisabled}
         onClick={onClick}

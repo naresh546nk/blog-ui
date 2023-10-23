@@ -86,19 +86,13 @@ const Layout = ({ headerHeight, footerHeight }) => {
             >
                 <Col lg={2} md={3} sm={3} className={width > 575 ? 'fixed-top fixed' : 'fixed m5'} >
                     <div className="d-flex flex-column w-100">
-                        <Button disabled={!isLoggedIn || myBlogsCounts <= 0} className="m-2" onClick={showYourBlogsHandler}>You Blogs ({myBlogsCounts})</Button>
-                        <Button disabled={!isLoggedIn || othersBlogsCounts <= 0} className="m-2" onClick={showOthersBlogsHandler} > Other Blogs ({othersBlogsCounts}) </Button>
-                        <Button disabled={!isLoggedIn} className="m-2" onClick={getAllBlogsHandler}> All Blogs ({myBlogsCounts + othersBlogsCounts}) </Button>
+                        <Button disabled={!isLoggedIn || myBlogsCounts <= 0} className="m-2" onClick={showYourBlogsHandler}>You Blogs( <span>{myBlogsCounts}</span>)</Button>
+                        <Button disabled={!isLoggedIn || othersBlogsCounts <= 0} className="m-2" onClick={showOthersBlogsHandler} > Other Blogs (<span>{othersBlogsCounts}</span>) </Button>
+                        <Button disabled={!isLoggedIn} className="m-2" onClick={getAllBlogsHandler}> All Blogs (<span>{myBlogsCounts + othersBlogsCounts}</span>) </Button>
                         <Form.Group className="m-2" >
                             <Form.Label>
                                 <b>Search blogs</b>
                             </Form.Label>
-                            {/* <Form.Control
-                                type="text"
-                                placeholder="Category"
-                                onChange={categoryOnChangeHandler}
-                            /> */}
-
                             <Form.Control
                                 type="search"
                                 placeholder="Category "
@@ -126,7 +120,7 @@ const Layout = ({ headerHeight, footerHeight }) => {
                                 placeholder="To"
                                 onChange={endDateOnChangeHandler}
                             />
-                            <Button disabled={!isLoggedIn || !category || !startDate || !endDate} onClick={searchHandler} className="w-100 mt-2">Search </Button>
+                            <Button disabled={!isLoggedIn || !category || !startDate || !endDate} onClick={searchHandler} type="button" className="btn w-100 mt-2">Search </Button>
                         </Form.Group>
 
                     </div>

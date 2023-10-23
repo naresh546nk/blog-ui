@@ -41,7 +41,7 @@ export const BlogContextProvider = (props) => {
 
 
   useEffect(() => {
-    const ourBlogsCount = mainData.filter(blog => blog.userId == user.id).length;
+    const ourBlogsCount = mainData.filter(blog => blog.userId == user?.id).length;
     setMyblogsCounts(ourBlogsCount)
     setOthersBlogsCounts(mainData.length - ourBlogsCount);
     console.log('userEffect ..')

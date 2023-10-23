@@ -29,7 +29,7 @@ const ShowBlogs = ({ post, deletePostByIdHandler }) => {
     >
       <Card.Header className="fst-italic d-flex justify-content-between">
         <div>
-          Author : {post.authorName}
+          Author : <b>{post.authorName}</b>
         </div>
         <div>
           Category : <b>{post.category}</b>
