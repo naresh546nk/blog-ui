@@ -10,12 +10,12 @@ const AuthContext = React.createContext({
   isLoggedIn: false,
   user: {},
   ROLES: {},
-  signUp: (props) => {},
-  confirmSignUp: (props) => {},
-  login: (props) => {},
-  logout: () => {},
-  addUserToDb: (props) => {},
-  getUser: (username) => {},
+  signUp: (props) => { },
+  confirmSignUp: (props) => { },
+  login: (props) => { },
+  logout: () => { },
+  addUserToDb: (props) => { },
+  getUser: (username) => { },
 });
 
 export const AuthContextProvider = (props) => {
@@ -113,6 +113,8 @@ export const AuthContextProvider = (props) => {
     setAuthority(null);
     setToken(null);
     setUserIsLoggedIn(false);
+    setUser(null)
+    setName(null)
   };
 
   const signUpHandler = async (props) => {

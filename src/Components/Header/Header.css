@@ -10,7 +10,9 @@
 .w100 {
   width: 100% !important;
 }
-
+.navbarBrand{
+  font-style: oblique
+}
 .navbarBrand:hover {
   display: inline-block;
   font-weight: 600;

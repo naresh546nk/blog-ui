@@ -9,15 +9,15 @@ import BlogContext from "../store/blog-context";
 const BlogPage = (props) => {
   const [post, setPost] = useState({});
   const [isPostDeleted, setIsPostDeleted] = useState(false);
-  const { error, featchBlogById, isLoading } = useContext(BlogContext);
-  const { deleteBlog } = useContext(BlogContext);
+  const { error, findBlogById, isLoading, deleteBlog } = useContext(BlogContext);
+
 
   //const [error, setError] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
 
   const fetchPostById = () => {
-    const response = featchBlogById(id);
+    const response = findBlogById(id);
     response.then((data) => {
       console.log(data);
       setPost(data.data);
@@ -42,6 +42,7 @@ const BlogPage = (props) => {
 
   useEffect(() => {
     fetchPostById();
+    console.log("userEffect triggered :")
   }, []);
 
   let content = <Loading />;
@@ -69,10 +70,6 @@ const BlogPage = (props) => {
     <Container>
       <Row
         className="pt-4 d-flex justify-content-center"
-        style={{
-          marginTop: "50px",
-          marginBottom: "50px",
-        }}
       >
         {content}
       </Row>

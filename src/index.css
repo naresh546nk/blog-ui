@@ -4,6 +4,7 @@
 }
 
 body {
+  overflow-x: hidden;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -75,4 +76,21 @@ code {
 
 .spring-logo-drop-shadow {
   filter: drop-shadow(1px 1px 1px rgb(19, 88, 0));
+}
+
+.fixed {
+  margin-top: 70px !important;
+  margin-right: 70px !important;
+  margin-bottom: 10px !important;
+}
+.w-95{
+  width: 95% !important;
+  margin-right: 3% !important;
+  
+}
+.m5{
+  width: 86% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-top: 50px !important;
 }

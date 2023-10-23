@@ -4,6 +4,7 @@ import Footer from "./Components/Footer/Footer";
 import Pages from "./Pages/Pages";
 import { BrowserRouter } from "react-router-dom";
 import "./i18n";
+import Layout from "./Components/Layout";
 
 function App() {
   const [headerHeight, setHeaderHeight] = useState(0);
@@ -18,7 +19,7 @@ function App() {
   return (
     <BrowserRouter>
       <Header onHeightChange={headerHeightChangeHandler} />
-      <Pages headerHeight={headerHeight} footerHeight={footerHeight} />
+      <Layout headerHeight={headerHeight} footerHeight={footerHeight} />
       <Footer onHeightChange={footerHeightChangeHandler} />
     </BrowserRouter>
   );

@@ -1,8 +1,8 @@
 import axios from "axios";
 
 var BASEURL = "http://backendalb-1158408001.us-east-1.elb.amazonaws.com:8000";
-if (process.env?.NODE_ENV === "development") {
-  BASEURL = "http://localhost:8080";
+if (process.env ?.NODE_ENV === "development") {
+  BASEURL = "http://localhost:9000";
 }
 const DOMAIN_URL = BASEURL + "/api/v1.0/blogsite";
 console.log("BASEURL :", BASEURL);
@@ -18,7 +18,7 @@ export const findDistinctCategory = ({ token }) => {
 
 export const saveUser = async (user) => {
   const userWithAuthority = { ...user, authority: "USER" };
-  return axios.post(`${DOMAIN_URL}/user/add`, userWithAuthority, {
+  return axios.post(`${DOMAIN_URL}/users/add`, userWithAuthority, {
     headers: {
       //Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -27,8 +27,17 @@ export const saveUser = async (user) => {
 };
 
 export const getUserByUsername = ({ username, token }) => {
-  console.log("token : ", token);
-  return axios.get(`${DOMAIN_URL}/user/${username}`, {
+  return axios.get(`${DOMAIN_URL}/users/username/${username}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+};
+
+export const getBlogsByCategoryAndDate = ({ category, startDate, endDate, token }) => {
+
+  return axios.get(`${DOMAIN_URL}/blogs/info/${category}/${startDate}/${endDate}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -37,7 +46,7 @@ export const getUserByUsername = ({ username, token }) => {
 };
 
 export const getAllBlogs = ({ token }) => {
-  return axios.get(`${DOMAIN_URL}/getall`, {
+  return axios.get(`${DOMAIN_URL}/blogs/getall`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -64,7 +73,7 @@ export const submitNewBlog = async ({ post, token }) => {
 };
 
 export const deleteBlog = ({ id, token }) => {
-  return fetch(`${DOMAIN_URL}/blogs/delete/${id}`, {
+  return axios.delete(`${DOMAIN_URL}/blogs/delete/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",

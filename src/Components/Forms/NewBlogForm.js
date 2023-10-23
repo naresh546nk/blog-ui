@@ -19,7 +19,7 @@ const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
       category,
       article,
       authorName,
-      blogUser: user,
+      userId: user.id,
     };
     console.log("Adding post : ", post);
     const response = submitNewBlog({ post, token });
@@ -36,7 +36,7 @@ const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
 
   const validateArticle = () => {
     const articleList = article.split(" ");
-    articleList.length > 100
+    articleList.length > 200
       ? setIsValidArticle(true)
       : setIsValidArticle(false);
   };
@@ -56,10 +56,10 @@ const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
               name="authorName"
               onChange={(e) => setAuthorName(e.target.value)}
               height="600px"
-              minLength={4}
-              maxLength={25}
+              minLength={8}
+              maxLength={40}
               required
-              isValid={authorName.length >= 4 && authorName.length <= 25}
+              isValid={authorName.length >= 8 && authorName.length <= 40}
             />
           </Form.Group>
         </Card.Header>
@@ -74,10 +74,10 @@ const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
                     placeholder={"Blog Name"}
                     name="blogName"
                     onChange={(e) => setBlogName(e.target.value)}
-                    minLength={6}
-                    maxLength={40}
+                    minLength={20}
+                    maxLength={60}
                     required
-                    isValid={blogName.length >= 6 && blogName.length <= 40}
+                    isValid={blogName.length >= 20 && blogName.length <= 60}
                   />
                 </Form.Group>
               </Col>
@@ -89,7 +89,7 @@ const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
                     placeholder={"Enter Category here .."}
                     name="category"
                     onChange={(e) => setCategory(e.target.value)}
-                    minLength={4}
+                    minLength={6}
                     maxLength={40}
                     required
                     isValid={category.length >= 6 && category.length <= 40}
@@ -103,7 +103,7 @@ const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
                 type="text"
                 name="article"
                 as="textarea"
-                style={{ overflow: "hidden", height: "40vh" }}
+                style={{ overflow: "hidden", height: "45vh" }}
                 onChange={(e) => setArticle(e.target.value)}
                 minLength={400}
                 maxLength={10000}
@@ -116,8 +116,8 @@ const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
                 isDisabled={
                   !isValidArticle ||
                   !(category.length >= 6 && category.length <= 40) ||
-                  !(blogName.length >= 6 && blogName.length <= 40) ||
-                  !(authorName.length >= 4 && authorName.length <= 25)
+                  !(blogName.length >= 20 && blogName.length <= 40) ||
+                  !(authorName.length >= 8 && authorName.length <= 40)
                 }
                 type="submit"
                 name={"Add New Blog"}
