@@ -2,7 +2,7 @@ const home = 'http://localhost:3000';
 const article = "A visit to a historical place is always an exciting experience.It is a fascinating adventure.I had one such experience during the last summer vacations, when I visited Bhopal.With my family, I reached Bhopal by train.After some rest, we undertook a visit to Bhopal.Bhopal is a historical city.We visited the Sanchi Stupa first.The 'Sanchi Stupa' is located about 46 km away from Bhopal in a small place called Sanchi.Sanchi is a small village in Raisen District of the state of Madhya Pradesh, India.It is a religious place with historical and archaeological significance.It is the location of several Buddhist monuments.The place is famous for the Stupas(brick mounds) which were built on the top of a hill.The Great Stupa at Sanchi is the oldest stone structure in India.It was originally commissioned by the emperor Ashoka the Great.It has four profusely carved ornamental gateways and a balustrade encircling the whole structure.By noon, we had completed the tour of Sanchi Stupa and returned back.I enjoyed my trip to the Sanchi Stupa very much.It was really an unforgettable experience which apart from being intellectually rewarding gave us a glimpse of our country's proud history.I enjoyed my trip to the Sanchi Stupa very much.It was really an unforgettable experience which apart from being intellectually rewarding gave us a glimpse of our country's proud history."
 const authorName = "Naresh Kumar";
 const blogName = "Blog name with 20 character";
-const category = "Test Category"
+const category = "Test Category with 20 character"
 describe("Adding Blogs ", () => {
     it("blog will be added valited and deleted", () => {
         cy.visit(home)
