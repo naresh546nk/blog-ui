@@ -6,7 +6,7 @@ import "./Header.css";
 import BlogContext from "../../store/blog-context";
 
 const Header = (props) => {
-  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { isLoggedIn, logout, user } = useContext(AuthContext);
   const { blogCategories, filterByCategory, getAllBlogs } =
     useContext(BlogContext);
   const [category, setCategory] = useState("");
@@ -47,38 +47,21 @@ const Header = (props) => {
     >
       <Navbar bg="white" expand="sm">
         <Container fluid>
-          <Navbar.Brand to="/" as={NavLink} onClick={onClickHandler}>
+          <Navbar.Brand to="/" as={NavLink} >
             <div className="navbarBrand">BLOG SITE</div>
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <div className="d-flex w-100">
-              <Form className="d-flex w-100">
-                <Form.Control
-                  type="search"
-                  placeholder="Search Blog By Category"
-                  className="me-2"
-                  aria-label="Search"
-                  onChange={(e) => setCategory(e.target.value)}
-                  list="blogCategoriesListId"
-                />
-                <datalist id="blogCategoriesListId">
-                  {blogCategories.map((cat) => (
-                    <option key={cat} value={cat} />
-                  ))}
-                </datalist>
-                <Button
-                  variant="outline-success button btn"
-                  onClick={submitHandler}
-                >
-                  Search
-                </Button>
-              </Form>
-            </div>
-
             {isLoggedIn && (
               <Nav className="d-flex w-100 justify-content-end">
+                <Link
+                  className="button btn btn-outline-primary me-1 my-1 text-decoration-none"
+                  to="/"
+                  as={NavLink}
+                >
+                  <b>Logged in as : {user?.name}</b>
+                </Link>
                 <Link
                   className="button btn btn-outline-primary me-1 my-1 text-decoration-none"
                   to="/new-post"

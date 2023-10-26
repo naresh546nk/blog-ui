@@ -9,6 +9,7 @@
     "formik": "^2.2.9",
     "i18next": "^21.8.13",
     "i18next-browser-languagedetector": "^6.1.4",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-bootstrap": "^2.4.0",
     "react-dom": "^18.2.0",
@@ -22,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress": "cypress open"
   },
   "eslintConfig": {
     "extends": [
@@ -41,5 +43,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@testing-library/cypress": "^10.0.1",
+    "cypress": "^13.3.2"
   }
 }

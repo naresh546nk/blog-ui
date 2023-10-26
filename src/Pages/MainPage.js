@@ -1,42 +1,38 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Container, Row } from "react-bootstrap";
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import BlogThumbnailsList from "../Components/BlogThumbnailsList";
 import Loading from "../Components/Loading";
 import AuthContext from "../store/auth-context";
 import BlogContext from "../store/blog-context";
 
-const MainPage = (props) => {
-  const [isLoaded, setIsLoaded] = useState(true);
-  const { getAllBlogs, getAllCategories, blogList, isLoading } =
+
+const MainPage = () => {
+  const { blogList, isLoading, getAllBlogs, getAllCategories, error } =
     useContext(BlogContext);
-  const { isLoggedIn } = useContext(AuthContext);
+
+  const { isLoggedIn } = useContext(AuthContext)
 
   useEffect(() => {
     if (isLoggedIn) {
-      console.log("calling getAllBlogs");
       getAllBlogs();
       getAllCategories();
     }
   }, [isLoggedIn]);
-  useEffect(() => {
-    if (!isLoading) {
-      setIsLoaded(false);
-    }
-  }, [isLoading]);
-
   return (
     <Container>
       <Row
-        xs={1}
-        md={2}
-        lg={3}
-        className="g-4 pb-4 justify-content-center"
+        xs={12}
+        md={12}
+        lg={12}
         style={{
-          marginTop: "60px",
-          marginBottom: "60px",
+          marginTop: "50px",
+          marginBottom: "40px",
         }}
       >
-        {isLoading ? <Loading /> : <BlogThumbnailsList posts={blogList} />}
+        <Col md={12}>
+          {isLoading ? <Loading /> : <BlogThumbnailsList posts={blogList} />}
+        </Col>
+
       </Row>
     </Container>
   );
