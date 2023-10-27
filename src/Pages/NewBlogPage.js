@@ -1,18 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row } from "react-bootstrap";
 import NewBlogForm from "../Components/Forms/NewBlogForm";
-import { submitNewBlog } from "../lib/api";
-import AuthContext from "../store/auth-context";
 import Banner from "../Components/Banner";
 import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 const NewBlogPage = (props) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [newPostId, setNewPostId] = useState(null);
-  const authContext = useContext(AuthContext);
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   useEffect(() => {
     setTimeout(() => {

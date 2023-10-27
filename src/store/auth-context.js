@@ -1,5 +1,6 @@
 import { Auth } from "aws-amplify";
 import React, { useEffect, useState } from "react";
+import { logger } from "../Components/utils/Logger";
 import { getUserByUsername, saveUser } from "../lib/api";
 
 const AuthContext = React.createContext({
@@ -10,21 +11,21 @@ const AuthContext = React.createContext({
   isLoggedIn: false,
   user: {},
   ROLES: {},
-  signUp: (props) => { },
-  confirmSignUp: (props) => { },
-  login: (props) => { },
-  logout: () => { },
-  addUserToDb: (props) => { },
-  getUser: (username) => { },
+  signUp: (props) => {},
+  confirmSignUp: (props) => {},
+  login: (props) => {},
+  logout: () => {},
+  addUserToDb: (props) => {},
+  getUser: (username) => {},
 });
 
 export const AuthContextProvider = (props) => {
   const [token, setToken] = useState();
-  const [username, setUsername] = useState();
+  const [username, setUsername] = useState("");
   const [name, setName] = useState();
   const [error, setError] = useState("");
   const [user, setUser] = useState({});
-  const [authority, setAuthority] = useState();
+  const [authority, setAuthority] = useState("");
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(false);
   const [isLocalDataSet, setIsLocalDataSet] = useState(false);
 
@@ -53,6 +54,7 @@ export const AuthContextProvider = (props) => {
     if (userIsLoggedIn) {
       getUserHandler({ username, token });
       localStorage.setItem("user", JSON.stringify(user));
+      logger.log("userLoggedIn useEffect called .");
     }
   }, [userIsLoggedIn]);
 
@@ -74,7 +76,7 @@ export const AuthContextProvider = (props) => {
   useEffect(() => {
     if (userIsLoggedIn) {
       const timmer = setTimeout(() => {
-        console.log("Token expire");
+        logger.log("Token expire and logout");
         logoutHandler();
       }, 3600000);
       return () => clearTimeout(timmer);
@@ -94,7 +96,7 @@ export const AuthContextProvider = (props) => {
       setIsLocalDataSet(true);
       return data;
     } catch (e) {
-      console.log(e);
+      logger.error("LoginHandler failed :", e);
       setError(e.message);
       throw e;
     }
@@ -113,8 +115,8 @@ export const AuthContextProvider = (props) => {
     setAuthority(null);
     setToken(null);
     setUserIsLoggedIn(false);
-    setUser(null)
-    setName(null)
+    setUser(null);
+    setName(null);
   };
 
   const signUpHandler = async (props) => {
@@ -140,13 +142,12 @@ export const AuthContextProvider = (props) => {
   const confirmSignUpHandler = async (props) => {
     setError(null);
     const { username, code } = props;
-    console.log("Props :", props);
     try {
       const data = await Auth.confirmSignUp(username, code);
       setError("");
-      console.log("data", data);
       return data;
     } catch (e) {
+      logger.error("Error Occured while Confirm signup :", e);
       setError(e.message);
       throw e;
     }
@@ -156,7 +157,6 @@ export const AuthContextProvider = (props) => {
     const response = saveUser(props);
     response
       .then((data) => {
-        console.log(data.data);
         setUser(user);
       })
       .catch((err) => setError(err.message));
@@ -191,7 +191,7 @@ export const AuthContextProvider = (props) => {
     getUser: getUserHandler,
   };
 
-  console.log("contextValue", contextValue);
+  logger.log("contextValue", contextValue);
 
   return (
     <AuthContext.Provider value={contextValue}>

@@ -21,7 +21,6 @@ const Header = (props) => {
 
   useEffect(() => {
     props.onHeightChange(70);
-    console.log("blogCategory ", blogCategories);
   }, []);
 
   useEffect(() => {
@@ -47,7 +46,7 @@ const Header = (props) => {
     >
       <Navbar bg="white" expand="sm">
         <Container fluid>
-          <Navbar.Brand to="/" as={NavLink} >
+          <Navbar.Brand to="/" as={NavLink}>
             <div className="navbarBrand">BLOG SITE</div>
           </Navbar.Brand>
 

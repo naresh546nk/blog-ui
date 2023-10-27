@@ -1,20 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import AuthContext from "../../store/auth-context";
-import BlogContext from "../../store/blog-context";
 import SubmitButton from "../SubmitButton";
 
 const ShowBlogs = ({ post, deletePostByIdHandler }) => {
   const [isSubmitDissable, setIsSubmitDissable] = useState(false);
   const { user, ROLES } = useContext(AuthContext);
-  const { deleteBlog } = useContext(BlogContext);
 
   const isButtonDissable = () => {
-    console.log("user :", user);
-    console.log("Roles : ", ROLES)
     const flag =
-      user ?.authority === ROLES.admin ||
-        user ?.username === post.userDto ?.username;
+      user?.authority === ROLES.admin ||
+      user?.username === post.userDto?.username;
     setIsSubmitDissable(flag);
   };
 
@@ -25,7 +21,7 @@ const ShowBlogs = ({ post, deletePostByIdHandler }) => {
   return (
     <Card
       className="boxShadow"
-      style={{ marginTop: '35px', marginBottom: "40px" }}
+      style={{ marginTop: "35px", marginBottom: "40px" }}
     >
       <Card.Header className="fst-italic d-flex justify-content-between">
         <div>
@@ -34,7 +30,6 @@ const ShowBlogs = ({ post, deletePostByIdHandler }) => {
         <div>
           Category : <b>{post.category}</b>
         </div>
-
       </Card.Header>
       <Card.Body>
         <Card.Title className="fst-italic">{post.blogName}</Card.Title>

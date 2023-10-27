@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Spinner } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
 
 const SubmitButton = ({
   isSubmitting,
@@ -11,12 +10,13 @@ const SubmitButton = ({
   type,
   onClick,
 }) => {
-  const { t } = useTranslation();
   return (
     <div className="d-flex justify-content-end">
       <Button
         variant={variant || "outline-primary"}
-        className={`${isSubmitting ? "disabled button" : "button"} ms-1 ${isDisabled}? "dissabled button": "active"`}
+        className={`${
+          isSubmitting ? "disabled button" : "button"
+        } ms-1 ${isDisabled}? "dissabled button": "active"`}
         type={type || "submit"}
         disabled={isSubmitting || isSubmitted || isDisabled}
         onClick={onClick}
@@ -29,7 +29,7 @@ const SubmitButton = ({
           aria-hidden="true"
           className={`${!isSubmitting && "visually-hidden"}`}
         />
-        <span className="ms-1">{!isSubmitting ? name : t("submitting")}</span>
+        <span className="ms-1">{!isSubmitting ? name : "Submitting"}</span>
       </Button>
     </div>
   );

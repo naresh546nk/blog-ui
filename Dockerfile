@@ -1,4 +1,4 @@
-FROM node:alpine as build
+FROM node:20-bullseye-slim as build
 
 WORKDIR /app
 

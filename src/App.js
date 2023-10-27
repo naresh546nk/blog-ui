@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import Header from "./Components/Header/Header";
 import Footer from "./Components/Footer/Footer";
-import Pages from "./Pages/Pages";
 import { BrowserRouter } from "react-router-dom";
-import "./i18n";
 import Layout from "./Components/Layout";
 
 function App() {

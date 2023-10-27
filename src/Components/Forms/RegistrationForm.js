@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 import Banner from "../Banner";
 import SubmitButton from "../SubmitButton";
+import { logger } from "../utils/Logger";
 
 const RegistrationForm = (props) => {
   const [name, setName] = useState("");
@@ -20,44 +21,46 @@ const RegistrationForm = (props) => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log("Submited ", name, username, password, confirmPassword);
+    logger.log("Submited ", name, username, password, confirmPassword);
     try {
       const data = await signUp({ username, password, name });
       setIsShowCode(true);
-      console.log("data :", data);
+      logger.log("signup is successfull with username:", username);
     } catch (e) {
+      logger.error("Error occured in signUp :", e);
       setIsShowCode(false);
     }
   };
 
   const confirmCodeHandler = async (e) => {
     e.preventDefault();
-    console.log("code ", code);
     try {
       const data = await confirmSignUp({
         username,
         code,
       });
       if (data === "SUCCESS") {
+        logger.log("Signup is successfull :", data);
         const response = addUserToDb({ name, username });
         response
           .then((data) => {
             if (data?.data) {
-              console.log("data :", data);
+              logger.log("user data added to db successfully ");
               setIsSignUpSuccess(true);
             }
           })
-          .catch((error) => {
-            console.log(error);
+          .catch((er) => {
+            logger.error("Add user data to db failed : ", er);
           });
       }
     } catch (e) {
-      console.log(e);
+      logger.error("confirm signup failed : ", e);
     }
   };
 
   useEffect(() => {
     if (isSignUpSuccess) {
+      logger.log("signup is success login and landing to home page");
       login({ username, password });
       setTimeout(() => {
         navigate("/");
