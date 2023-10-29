@@ -6,6 +6,7 @@ env:
     REPOSITORY_URI: naresh546
     DOCKERHUB_TOKEN: dckr_pat_e5UVxPAPz1V5s1dMthMIb6yZXgM
     DOCKERHUM_USER: naresh546
+    TAG: aws
 phases:
   pre_build:
     commands:
@@ -13,7 +14,8 @@ phases:
       - echo ${DOCKERHUB_TOKEN} | docker login -u ${DOCKERHUM_USER} --password-stdin
       # ECR login
       # - aws ecr get-login-password --region ${AWS_REGION} | docker login -u AWS --password-stdin ${REPOSITORY_URI}
-      - ECR_IMAGE_URI="${REPOSITORY_URI}/${ECR_REPO_NAME}:${CODEBUILD_BUILD_NUMBER}-${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}"
+      # - ECR_IMAGE_URI="${REPOSITORY_URI}/${ECR_REPO_NAME}:${CODEBUILD_BUILD_NUMBER}-${CODEBUILD_RESOLVED_SOURCE_VERSION:0:8}"
+      - ECR_IMAGE_URI="${REPOSITORY_URI}/${ECR_REPO_NAME}:${TAG}"
 
   build:
     commands:

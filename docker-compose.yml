@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+  blogui:
+    container_name: blogui
+    image: naresh546/blog-site-ui:aws
+    ports:
+      - "80:80"
+    networks:
+      - ui-blogsite
+    environment:
+      - TEST_URL=http://test.com
+networks:
+  ui-blogsite:
