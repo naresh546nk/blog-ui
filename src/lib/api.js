@@ -5,7 +5,7 @@ logger.log("process.env:", process.env);
 var BASEURL = "http://localhost:9000";
 if (process.env?.NODE_ENV === "production") {
   BASEURL =
-    "http://ecs-LoadBala-kdlHFtsN7FMs-87d8a5429e620070.elb.ap-south-1.amazonaws.com:9000";
+    "http://ecs-LoadBala-aNc8nTIegD6M-9b1fa76ed417bb4e.elb.ap-south-1.amazonaws.com:9000";
 }
 const DOMAIN_URL = BASEURL + "/api/v1.0/blogsite";
 logger.log("BASEURL :", BASEURL);
