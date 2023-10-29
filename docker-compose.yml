@@ -7,7 +7,5 @@ services:
       - "80:80"
     networks:
       - ui-blogsite
-    environment:
-      - TEST_URL=http://test.com
 networks:
   ui-blogsite:

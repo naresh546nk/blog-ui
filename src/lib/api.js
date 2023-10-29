@@ -4,7 +4,8 @@ import { logger } from "../Components/utils/Logger";
 logger.log("process.env:", process.env);
 var BASEURL = "http://localhost:9000";
 if (process.env?.NODE_ENV === "production") {
-  BASEURL = "http://apigateway:9000";
+  BASEURL =
+    "http://ecs-loadbala-81yo9ipnj1ni-418d306720660f23.elb.ap-south-1.amazonaws.com:9000";
 }
 const DOMAIN_URL = BASEURL + "/api/v1.0/blogsite";
 logger.log("BASEURL :", BASEURL);
