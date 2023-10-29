@@ -1,7 +1,8 @@
 import axios from "axios";
 import { logger } from "../Components/utils/Logger";
 
-logger.log("process.env:", process.env);
+logger.log("All the env variables proces.env:", process.env);
+
 var BASEURL = "http://localhost:9000";
 if (process.env?.NODE_ENV === "production") {
   BASEURL =
