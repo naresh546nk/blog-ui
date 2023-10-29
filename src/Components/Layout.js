@@ -114,11 +114,7 @@ const Layout = ({ headerHeight, footerHeight }) => {
               className="m-2"
               onClick={getAllBlogsHandler}
             >
-              All Blogs (
-              <span>
-                {myBlogsCounts} + {othersBlogsCounts}
-              </span>
-              )
+              All Blogs (<span>{myBlogsCounts + othersBlogsCounts}</span>)
             </Button>
             <Form.Group className="m-2">
               <Form.Label>

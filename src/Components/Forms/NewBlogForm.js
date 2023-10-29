@@ -4,6 +4,7 @@ import SubmitButton from "../SubmitButton";
 import AuthContext from "../../store/auth-context";
 import { useState } from "react";
 import { submitNewBlog } from "../../lib/api";
+import { logger } from "../utils/Logger";
 
 const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
   const { user, token } = useContext(AuthContext);
@@ -21,16 +22,16 @@ const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
       authorName,
       userId: user.id,
     };
-    console.log("Adding post : ", post);
+    logger.log("Adding post : ", post);
     const response = submitNewBlog({ post, token });
     response
       .then((data) => {
         setIsSubmitted(true);
         setNewPostId(data.data.id);
-        console.log("Data :", data.data);
+        logger.log("post added successfully with id :", data.data.id);
       })
       .catch((error) => {
-        console.log(error);
+        logger.error("Post add failed :", error);
       });
   };
 
@@ -65,7 +66,6 @@ const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
             </Form.Group>
           </Card.Header>
           <Card.Body className="m-2 pb-3 border rounded-3">
-
             <Row>
               <Col md={6} sm={12}>
                 <Form.Group controlId="blogName">
@@ -124,11 +124,9 @@ const NewBlogForm = ({ setIsSubmitted, setNewPostId }) => {
                 name={"Add New Blog"}
               />
             </div>
-
           </Card.Body>
         </Form>
       </Card>
-
     </Col>
   );
 };

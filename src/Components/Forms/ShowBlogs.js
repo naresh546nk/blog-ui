@@ -1,22 +1,42 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
+import { getUserById } from "../../lib/api";
 import AuthContext from "../../store/auth-context";
 import SubmitButton from "../SubmitButton";
+import { logger } from "../utils/Logger";
 
 const ShowBlogs = ({ post, deletePostByIdHandler }) => {
   const [isSubmitDissable, setIsSubmitDissable] = useState(false);
-  const { user, ROLES } = useContext(AuthContext);
+  const [userDto, setUserDto] = useState();
+  const { user, ROLES, token } = useContext(AuthContext);
+
+  const findUserById = (id) => {
+    const response = getUserById({ id, token });
+    response
+      .then((data) => {
+        logger.log("featching user details :", data.data);
+        setUserDto(data.data);
+      })
+      .catch((err) =>
+        logger.error("error occured while featching user details :", err)
+      );
+  };
 
   const isButtonDissable = () => {
     const flag =
-      user?.authority === ROLES.admin ||
-      user?.username === post.userDto?.username;
+      user?.authority === ROLES.admin || user?.username === userDto?.username;
     setIsSubmitDissable(flag);
   };
 
   useEffect(() => {
+    if (!!post?.userDto?.id) {
+      findUserById(post?.userDto?.id);
+    }
+  }, [post?.userDto?.id]);
+
+  useEffect(() => {
     isButtonDissable();
-  }, [post]);
+  }, [post, userDto]);
 
   return (
     <Card

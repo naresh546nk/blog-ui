@@ -73,6 +73,15 @@ export const getBlogById = ({ id, token }) => {
   });
 };
 
+export const getUserById = ({ id, token }) => {
+  return axios.get(`${DOMAIN_URL}/users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+};
+
 export const submitNewBlog = async ({ post, token }) => {
   return axios.post(`${DOMAIN_URL}/blogs/add`, post, {
     headers: {
