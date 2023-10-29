@@ -1,4 +1,5 @@
 version: "3.8"
+# x-aws-loadbalancer: "ecs-LoadBala-aNc8nTIegD6M"
 services:
   blogui:
     container_name: blogui
