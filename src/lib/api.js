@@ -2,14 +2,10 @@ import axios from "axios";
 import { logger } from "../Components/utils/Logger";
 
 logger.log("process.env:", process.env);
-const BASEURL = process.env?.BASEURL || "http://localhost:9000";
-
-logger.log("base url :", BASEURL);
-
-// var BASEURL = "http://backendalb-1158408001.us-east-1.elb.amazonaws.com:8000";
-// if (process.env?.NODE_ENV === "development") {
-//   BASEURL = "http://localhost:9000";
-// }
+var BASEURL = "http://localhost:9000";
+if (process.env?.NODE_ENV === "production") {
+  BASEURL = "http://apigateway:9000";
+}
 const DOMAIN_URL = BASEURL + "/api/v1.0/blogsite";
 logger.log("BASEURL :", BASEURL);
 export const findDistinctCategory = ({ token }) => {
