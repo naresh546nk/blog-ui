@@ -8,5 +8,8 @@ services:
       - "80:80"
     networks:
       - ui-blogsite
+    environment:
+      - REACT_APP_TOKEN="Token value set in environment variables"
+      - REACT_APP_TOKEN_2="Extra token variables"
 networks:
   ui-blogsite:

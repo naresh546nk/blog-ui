@@ -3,6 +3,8 @@ import { logger } from "../Components/utils/Logger";
 
 logger.log("All the env variables proces.env:", process.env);
 
+logger.log("windo._env_ variable :", window._env_);
+
 var BASEURL = "http://localhost:9000";
 if (process.env?.NODE_ENV === "production") {
   BASEURL =
